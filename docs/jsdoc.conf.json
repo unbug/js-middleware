@@ -12,6 +12,7 @@
     "systemName": "js-middleware",
     "linenums": true,
     "sort": false,
-    "dateFormat": "YYYY-MM-DD"
+    "dateFormat": "YYYY-MM-DD",
+    "theme": "cosmo"
   }
 }
