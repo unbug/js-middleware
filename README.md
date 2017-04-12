@@ -2,6 +2,11 @@
 
 Powerful Javascript Middleware Pattern Implementation, manage and apply middleweares for any object.
 
+## Links
+ - [Project overview](https://unbug.github.io/js-middleware/)
+ - [Documentation](https://unbug.github.io/js-middleware/docs/html/)
+ - [GitHub repo](https://github.com/unbug/js-middleware)
+
 # Overview
 Middleware functions are functions that have access to the target function and it's arguments,
 and the target object and the next middleware function in the target function cycle.
