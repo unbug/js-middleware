@@ -147,7 +147,7 @@ If the first argument is a middleware object, the rest arguments must be middlew
 # Build
 1. Run `npm install` to install requirements.
 
-2. Run `gulp` to builds the library, generates `dist/index.js` as the core script, watches for file changes, 
+2. Run `gulp` to builds the library, generates `dist/middleware.js` as the core script, watches for file changes, 
 starts a HTTP server for debug.
   ```
     Usage
