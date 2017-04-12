@@ -105,7 +105,7 @@ middlewareManager.use(PersonMiddleware);
 Or we can use `middlewareMethods` to define function names for middleweare target within a class.
 
 ```
-class CuePointMiddleware {
+class PersonMiddleware {
   constructor() {
     /**
      * Define function names for middleweare target.
