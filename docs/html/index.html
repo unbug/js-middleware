@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>js-middleware Index</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.simplex.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">js-middleware</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="MiddlewareManager.html">MiddlewareManager</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html#compose">compose</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-8">
+	
+		<div id="main">
+			
+
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+    <section class="readme-section">
+        <article><h1>js-middleware</h1><p>Powerful Javascript Middleware Pattern Implementation, manage and apply middleweares for any object.</p>
+<h1>Overview</h1><p>Middleware functions are functions that have access to the target function and it's arguments,
+and the target object and the next middleware function in the target function cycle.
+The next middleware function is commonly denoted by a variable named next.</p>
+<p>Middleware functions can perform the following tasks:</p>
+<ul>
+<li>Execute any code.</li>
+<li>Make changes to the function's arguments.</li>
+<li>End the target function.</li>
+<li><p>Call the next middleware in the stack.</p>
+<p>If the current middleware function does not end the target function cycle,
+it must call next() to pass control to the next middleware function. Otherwise,
+the target function will be left hanging.</p>
+</li>
+</ul>
+<h1>Get started</h1><h2>Install</h2><pre class="prettyprint source"><code>npm install --save js-middleware</code></pre><h2>import</h2><pre class="prettyprint source"><code>import {MiddlewareManager} from 'js-middleware';</code></pre><h1>Usages</h1><h2>Basic</h2><p>We define a Person class.</p>
+<pre class="prettyprint source"><code>// the target object
+class Person {
+  // the target function
+  walk(step) {
+    this.step = step;
+  }
+
+  speak(word) {
+    this.word = word;
+  }
+ }</code></pre><p>Then we define a middleware function to print log.</p>
+<pre class="prettyprint source"><code> // middleware for walk function
+ const logger = target => next => (...args) => {
+    console.log(`walk start, steps: ${args[0]}.`);
+    const result = next(...args);
+    console.log(`walk end.`);
+    return result;
+  }</code></pre><p>Now we apply the log function as a middleware to a Person instance.</p>
+<pre class="prettyprint source"><code> // apply middleware to target object
+ const p = new Person();
+ const middlewareManager = new MiddlewareManager(p);
+ middlewareManager.use('walk', walk);
+ p.walk(3);</code></pre><p>Whenever a Person instance call it's walk method, we'll see logs from the looger middleware.</p>
+<h2>Middleware object</h2><p>We can also apply a middleware object to a target object. Middleware object is an object that contains function's name as same as the target object's function name.
+Function's name start or end with &quot;_&quot; will not be able to apply middleware.</p>
+<pre class="prettyprint source"><code>const PersonMiddleware {
+  walk: target => next => step => {
+    console.log(`walk start, steps: step.`);
+    const result = next(step);
+    console.log(`walk end.`);
+    return result;
+  },
+  speak: target => next => word => {
+    word = 'this is a middleware trying to say: ' + word;
+    return next(word);
+  }
+}
+
+ // apply middleware to target object
+ const p = new Person();
+ const middlewareManager = new MiddlewareManager(p);
+middlewareManager.use(PersonMiddleware);
+ p.walk(3);
+ p.speak('hi');</code></pre><h2>middlewareMethods</h2><p>Or we can use <code>middlewareMethods</code> to define function names for middleweare target within a class.</p>
+<pre class="prettyprint source"><code>class CuePointMiddleware {
+  constructor() {
+    /**
+     * Define function names for middleweare target.
+     * @type {Array}
+     */
+    this.middlewareMethods = ['walk', 'speak'];
+  }
+  log(text) {
+    console.log('Middleware log: ' + text);
+  }
+  walk(target) {
+    return next => step => {
+      this.log(`walk start, steps: step.`);
+      const result = next(step);
+      this.log(`walk end.`);
+      return result;
+    }
+  }
+  speak(target) {
+    return next => word => {
+      this.log('this is a middleware tring to say: ' + word);
+      return next(word);
+    }
+  }
+}
+
+ // apply middleware to target object
+ const p = new Person();
+ const middlewareManager = new MiddlewareManager(p);
+ middlewareManager.use(new PersonMiddleware())
+ p.walk(3);
+ p.speak('hi');</code></pre><h1>APIs</h1><h3>.use(methodName, ...middlewares)</h3><p>Apply (register) middleware functions to the target function or apply (register) middleware objects.
+If the first argument is a middleware object, the rest arguments must be middleware objects.</p>
+<ul>
+<li><strong>{string|object}</strong> methodName String for target function name, object for a middleware object.</li>
+<li><strong>{...function}</strong> middlewares The middleware chain to be applied.</li>
+<li>return <strong>{object}</strong> this</li>
+</ul>
+<h1>Build</h1><ol>
+<li><p>Run <code>npm install</code> to install requirements.</p>
+</li>
+<li><p>Run <code>gulp</code> to builds the library, generates <code>dist/index.js</code> as the core script, watches for file changes, 
+starts a HTTP server for debug.</p>
+<pre class="prettyprint source"><code> Usage
+   gulp [TASK]
+
+ Available tasks
+   default     Run tasks: clean, lint, build, docs, watch, server
+   build       Builds the library
+   clean       Cleans files
+   clean:dist  Cleans dist files
+   docs        Builds documentation
+   docs:html   Builds HTML documentation
+   docs:md     Builds markdown documentation
+   help        Display this help text.
+   lint        Lint JS files
+   server      Starts a HTTP server for debug.
+   watch       Watches for changes in files, re-lint, re-build & re-docs</code></pre></li>
+<li>Run <code>gulp docs</code> to build docs. View markdown docs with <code>docs/API.md</code>, or run <code>gulp server</code> to start a HTTP server 
+and view HTML docs with <a href="localhost:3000/docs/html/">localhost:3000/docs/html/</a>.</li>
+</ol></article>
+    </section>
+
+
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+	
+		on 2017-04-12
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

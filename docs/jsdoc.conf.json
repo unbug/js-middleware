@@ -1,0 +1,17 @@
+{
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "opts": {
+    "destination": "./docs/html"
+  },
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "templates": {
+    "systemName": "js-middleware",
+    "linenums": true,
+    "sort": false,
+    "dateFormat": "YYYY-MM-DD"
+  }
+}
