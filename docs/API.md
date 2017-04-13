@@ -2,7 +2,7 @@
 
 <dl>
 <dt><a href="#MiddlewareManager">MiddlewareManager</a></dt>
-<dd><p>Manage and apply middlewares for an object.
+<dd><p>Manage middlewares for an object.
 Middleware functions are functions that have access to the target function and it&#39;s arguments,
 and the target object and the next middleware function in the target function cycle.
 The next middleware function is commonly denoted by a variable named next.</p>
@@ -52,7 +52,7 @@ the resulting composite function.</p>
 <a name="MiddlewareManager"></a>
 
 ## MiddlewareManager
-Manage and apply middlewares for an object.
+Manage middlewares for an object.
 Middleware functions are functions that have access to the target function and it's arguments,
 and the target object and the next middleware function in the target function cycle.
 The next middleware function is commonly denoted by a variable named next.

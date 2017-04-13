@@ -1,6 +1,7 @@
 # js-middleware
 
-Powerful Javascript Middleware Pattern Implementation, manage and apply middleweares for any object.
+Powerful Javascript Middleware Pattern implementation, apply middleweares to any object.
+A painless solution to make codes as scalable and maintainable as ReduxJS and ExpressJS.
 
 ## Links
  - [Project overview](https://unbug.github.io/js-middleware/)
@@ -24,16 +25,18 @@ Middleware functions can perform the following tasks:
  
 # Get started
 
-## Install
+1. **window.MiddlewareManager** is available for browsers by include
+ [`dist/middleware.min.js`](https://github.com/unbug/js-middleware/tree/master/dist) file in your HTML.
+```
+  <script src="middleware.min.js"></script>
+```
+2. Or install the package
 ```
 npm install --save js-middleware
-
 ```
-
-## import
+and import it in your files
 ```
 import {MiddlewareManager} from 'js-middleware';
-
 ```
 
 # Usages
@@ -96,7 +99,7 @@ const PersonMiddleware {
  // apply middleware to target object
  const p = new Person();
  const middlewareManager = new MiddlewareManager(p);
-middlewareManager.use(PersonMiddleware);
+ middlewareManager.use(PersonMiddleware);
  p.walk(3);
  p.speak('hi');
 ```
