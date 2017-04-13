@@ -1,7 +1,7 @@
 {
   "name": "js-middleware",
   "description": "Powerful Javascript Middleware Pattern Implementation.",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "license": "MIT",
   "main": "dist/middleware.js",
   "repository": "unbug/js-middleware",
@@ -13,7 +13,6 @@
   "keywords": [
     "middleware",
     "javascript middleware",
-    "js middleware",
     "redux middleware",
     "express middleware",
     "middleware pattern"
