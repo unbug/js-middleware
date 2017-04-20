@@ -1,9 +1,9 @@
 {
   "name": "js-middleware",
   "description": "Powerful Javascript Middleware Pattern Implementation.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
-  "main": "dist/middleware.js",
+  "main": "lib/middleware.js",
   "repository": "unbug/js-middleware",
   "author": {
     "name": "unbug",
