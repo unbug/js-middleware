@@ -3,7 +3,7 @@ module.exports = {
   'rules': {
     'no-unused-vars': [2, {'vars': 'all', 'args': 'none'}],
     'no-empty': 0,
-    'consistent-this': [2, 'that'],
+    'consistent-this': [0, 'that'],
     'comma-spacing': [2, {'before': false, 'after': true}],
     'key-spacing': [2, {'beforeColon': false, 'afterColon': true, 'mode': 'minimum'}],
     'space-before-function-paren': [2, {'anonymous': 'always', 'named': 'never'}],
