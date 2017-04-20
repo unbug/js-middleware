@@ -1,6 +1,6 @@
 {
   "presets": [
-    "env"
+    "latest"
   ],
   "plugins": [
     "transform-class-properties"
