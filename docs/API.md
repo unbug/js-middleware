@@ -35,8 +35,6 @@ the target function will be left hanging.</p>
   }
 </code></pre><p>Function&#39;s name start or end with &quot;_&quot; will not be able to apply middleware.</p>
 </dd>
-<dt><a href="#MiddlewareManager">MiddlewareManager</a></dt>
-<dd></dd>
 </dl>
 
 ## Functions
@@ -102,46 +100,107 @@ Function's name start or end with "_" will not be able to apply middleware.
 <a name="new_MiddlewareManager_new"></a>
 
 ### new MiddlewareManager(target, ...middlewareObjects)
-**Returns**: <code>object</code> - this  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | target | <code>object</code> | The target object. |
 | ...middlewareObjects | <code>object</code> | Middleware objects. |
 
-<a name="MiddlewareManager+use"></a>
+**Example**  
+```js
+## Basic
 
-### middlewareManager.use(methodName, ...middlewares) ⇒ <code>object</code>
-Apply (register) middleware functions to the target function or apply (register) middleware objects.
-If the first argument is a middleware object, the rest arguments must be middleware objects.
+We define a Person class.
+// the target object
+class Person {
+  // the target function
+  walk(step) {
+    this.step = step;
+  }
 
-**Kind**: instance method of <code>[MiddlewareManager](#MiddlewareManager)</code>  
-**Returns**: <code>object</code> - this  
+  speak(word) {
+    this.word = word;
+  }
+}
 
-| Param | Type | Description |
-| --- | --- | --- |
-| methodName | <code>string</code> &#124; <code>object</code> | String for target function name, object for a middleware object. |
-| ...middlewares | <code>function</code> &#124; <code>object</code> | The middleware chain to be applied. |
+Then we define a middleware function to print log.
 
-<a name="MiddlewareManager"></a>
+// middleware for walk function
+const logger = target => next => (...args) => {
+  console.log(`walk start, steps: ${args[0]}.`);
+  const result = next(...args);
+  console.log(`walk end.`);
+  return result;
+}
 
-## MiddlewareManager
-**Kind**: global class  
+Now we apply the log function as a middleware to a Person instance.
 
-* [MiddlewareManager](#MiddlewareManager)
-    * [new MiddlewareManager(target, ...middlewareObjects)](#new_MiddlewareManager_new)
-    * [.use(methodName, ...middlewares)](#MiddlewareManager+use) ⇒ <code>object</code>
+// apply middleware to target object
+const p = new Person();
+const middlewareManager = new MiddlewareManager(p);
+middlewareManager.use('walk', walk);
+p.walk(3);
 
-<a name="new_MiddlewareManager_new"></a>
+Whenever a Person instance call it's walk method, we'll see logs from the looger middleware.
 
-### new MiddlewareManager(target, ...middlewareObjects)
-**Returns**: <code>object</code> - this  
+## Middleware object
+We can also apply a middleware object to a target object.
+Middleware object is an object that contains function's name as same as the target object's function name.
 
-| Param | Type | Description |
-| --- | --- | --- |
-| target | <code>object</code> | The target object. |
-| ...middlewareObjects | <code>object</code> | Middleware objects. |
+const PersonMiddleware {
+  walk: target => next => step => {
+    console.log(`walk start, steps: step.`);
+    const result = next(step);
+    console.log(`walk end.`);
+    return result;
+  },
+  speak: target => next => word => {
+    word = 'this is a middleware trying to say: ' + word;
+    return next(word);
+  }
+}
 
+// apply middleware to target object
+const p = new Person();
+const middlewareManager = new MiddlewareManager(p);
+middlewareManager.use(PersonMiddleware);
+p.walk(3);
+p.speak('hi');
+
+## middlewareMethods
+Or we can use `middlewareMethods` to define function names for middleware target within a class.
+
+class PersonMiddleware {
+  constructor() {
+    //Define function names for middleware target.
+    this.middlewareMethods = ['walk', 'speak'];
+  }
+  log(text) {
+    console.log('Middleware log: ' + text);
+  }
+  walk(target) {
+    return next => step => {
+      this.log(`walk start, steps: step.`);
+      const result = next(step);
+      this.log(`walk end.`);
+      return result;
+    }
+  }
+  speak(target) {
+    return next => word => {
+      this.log('this is a middleware trying to say: ' + word);
+      return next(word);
+    }
+  }
+}
+
+// apply middleware to target object
+const p = new Person();
+const middlewareManager = new MiddlewareManager(p);
+middlewareManager.use(new PersonMiddleware())
+p.walk(3);
+p.speak('hi');
+```
 <a name="MiddlewareManager+use"></a>
 
 ### middlewareManager.use(methodName, ...middlewares) ⇒ <code>object</code>
