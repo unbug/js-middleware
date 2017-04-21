@@ -1,7 +1,7 @@
 {
   "name": "js-middleware",
   "description": "Powerful Javascript Middleware Pattern Implementation.",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "license": "MIT",
   "main": "dist/middleware.js",
   "repository": "unbug/js-middleware",
@@ -25,6 +25,7 @@
   "devDependencies": {
     "babel-core": "^6.24.1",
     "babel-eslint": "^6.1.2",
+    "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-class-properties": "^6.23.0",
     "babel-preset-env": "^1.4.0",
     "babelify": "^7.3.0",

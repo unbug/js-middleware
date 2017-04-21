@@ -7,13 +7,15 @@ var derequire = require('derequire');
 var source = require('vinyl-source-stream');
 var map = require('vinyl-map');
 var buffer = require('vinyl-buffer');
+var configs = require('../package.json');
 
 gulp.task('build', 'Builds the library', function (cb) {
   var production = $.util.env.type === 'production';
   var b = browserify({
     debug: !production,
     entries: './lib/Middleware.js',
-    paths: ['./lib']
+    paths: ['./lib'],
+    standalone: configs.name
   });
 
   // transform to babel

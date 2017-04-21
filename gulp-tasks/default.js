@@ -5,7 +5,7 @@ var runSequence = require('run-sequence');
 function watch() {
   return gulp.watch(['lib/**/*.js', './README.md'], function (event) {
     $.util.log($.util.colors.bold('File ' + event.path + ' was ' + event.type + ', running tasks...'));
-    runSequence('lint', 'build', 'docs');
+    runSequence('lint', 'build', 'mini', 'docs');
   });
 }
 
