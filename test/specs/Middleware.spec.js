@@ -1,39 +1,54 @@
 'use strict';
-import FAST from '../../lib/FAST';
-import {DopplerServer} from '../../lib/servers/Doppler';
+import {MiddlewareManager} from '../../lib/Middleware';
+import Person from '../person/Person';
+import WalkMiddleware from '../middlewares/WalkMiddleware';
+import {PersonMiddleware1, PersonMiddleware2} from '../middlewares/PersonMiddleware';
 
-describe('FAST APIs: ', () => {
-  let fast;
-  let context = {'app':'chromecast', 'app_version':'111111', 'user_id':'2000000671'};
+describe('Middleware: ', () => {
+  let person;
+  let middlewareManager;
 
-  before(() => {
-    fast = new FAST({
-      production: false,
-      source: 'playback'
+  beforeEach(() => {
+    person = new Person();
+    middlewareManager = new MiddlewareManager(person);
+  });
+
+  afterEach(() => {
+    person = null;
+    middlewareManager = null;
+  });
+
+  describe('middleware function: ', () => {
+    it('should apply the middlweare function', () => {
+      middlewareManager.use('walk', WalkMiddleware);
+      const step = person.step;
+      const newStep = 3;
+      person.walk(newStep);
+      return assert.equal(person.step, newStep + 1);
     });
   });
 
-  after(() => {
-    fast = null;
-  });
-
-  describe('.setConfigs(): ', () => {
-    it('should contains context', () => {
-      fast.setConfigs({context: context});
-      return assert.deepEqual(fast.configs.context, context);
-    });
-
-    it('should has a true production but not change source', () => {
-      let source  = fast.configs.source;
-      fast.setConfigs({production: true});
-      assert.isTrue(fast.configs.production);
-      assert.equal(fast.configs.source, source);
+  describe('middleware object: ', () => {
+    it('should apply the middlweare object', () => {
+      middlewareManager.use(PersonMiddleware1);
+      const step = person.step;
+      const newStep = 3;
+      person.walk(newStep);
+      person.speak('hello');
+      assert.equal(person.step, newStep + 1);
+      assert.isTrue(/from middleware/g.test(person.word), newStep + 1);
     });
   });
 
-  describe('.doppler: ', () => {
-    it('should be a DopplerServer instance', () => {
-      return assert.instanceOf(fast.doppler, DopplerServer);
+  describe('middlewareMethods: ', () => {
+    it('should apply the middlweare object', () => {
+      middlewareManager.use(new PersonMiddleware2());
+      const step = person.step;
+      const newStep = 3;
+      person.walk(newStep);
+      person.speak('hello');
+      assert.equal(person.step, newStep + 1);
+      assert.isTrue(/from middleware/g.test(person.word), newStep + 1);
     });
   });
 });
