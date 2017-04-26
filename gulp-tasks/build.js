@@ -9,7 +9,7 @@ var map = require('vinyl-map');
 var buffer = require('vinyl-buffer');
 var configs = require('../package.json');
 
-gulp.task('build', 'Builds the library', function (cb) {
+gulp.task('build', 'Builds the library.', function (cb) {
   var production = $.util.env.type === 'production';
   var b = browserify({
     debug: !production,
@@ -40,7 +40,7 @@ gulp.task('build', 'Builds the library', function (cb) {
     });
 });
 
-gulp.task('mini', 'Minify the library', function () {
+gulp.task('mini', 'Minify the library.', function () {
   return gulp.src('./dist/middleware.js')
     .pipe($.uglify())
     .pipe($.rename({

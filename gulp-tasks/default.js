@@ -9,4 +9,4 @@ function watch() {
   });
 }
 
-gulp.task('watch', 'Watches for changes in files, re-lint, re-build & re-docs', watch);
+gulp.task('watch', 'Watches for changes in files, re-lint, re-build & re-docs.', watch);
