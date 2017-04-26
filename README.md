@@ -83,7 +83,7 @@ We can also apply a middleware object to a target object. Middleware object is a
 Function's name start or end with "_" will not be able to apply middleware.
 
 ```
-const PersonMiddleware {
+const PersonMiddleware = {
   walk: target => next => step => {
     console.log(`walk start, steps: step.`);
     const result = next(step);
@@ -158,27 +158,29 @@ If the first argument is a middleware object, the rest arguments must be middlew
 2. Run `gulp` to builds the library, generates `dist/middleware.js` as the core script, watches for file changes, 
 starts a HTTP server for debug.
   ```
-    Usage
-      gulp [TASK]
-    
-    Available tasks
-      default     Run tasks: clean, lint, build, docs, watch, server
-      build       Builds the library
-      clean       Cleans files
-      clean:dist  Cleans dist files
-      docs        Builds documentation
-      docs:html   Builds HTML documentation
-      docs:md     Builds markdown documentation
-      help        Display this help text.
-      lint        Lint JS files
-      server      Starts a HTTP server for debug.
-      watch       Watches for changes in files, re-lint, re-build & re-docs
+  Usage
+    gulp [TASK] [OPTIONS...]
+  
+  Available tasks
+    build       Builds the library.
+    clean       Cleans files.
+    clean:dist  Cleans dist files.
+    clean:docs  Cleans docs files.
+    default    
+    docs        Builds documentation.
+    docs:html   Builds HTML documentation.
+    docs:md     Builds markdown documentation.
+    help        Display this help text.
+    lint        Lint JS files.
+    mini        Minify the library.
+    server      Starts a HTTP server for debug.
+    test        Run test cases.
+    watch       Watches for changes in files, re-lint, re-build & re-docs.
    ```
 3. Run `gulp docs` to build docs. View markdown docs with `docs/API.md`, or run `gulp server` to start a HTTP server 
 and view HTML docs with [localhost:3000/docs/html/](localhost:3000/docs/html/).
    
 # Roadmap & Make contributions
+ - Supports RegExp to match method names, pass the current method name as param to the current middleware.
  - **once(methodName, ...middlewares)** Apply middlewares only run once.
- - Supports RegExp to match method names, pass the current method name to the current middleware.
  - Be able to **unuse** middlewares.
- - 
