@@ -1,7 +1,7 @@
 {
   "name": "js-middleware",
   "description": "Powerful Javascript Middleware Pattern Implementation.",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "license": "MIT",
   "main": "dist/middleware.js",
   "repository": "unbug/js-middleware",
@@ -35,7 +35,6 @@
     "chai": "^3.5.0",
     "del": "^2.2.2",
     "derequire": "^2.0.6",
-    "esdoc": "^0.4.8",
     "eslint": "^3.17.1",
     "fs-then-native": "^1.0.2",
     "gulp": "^3.9.1",
