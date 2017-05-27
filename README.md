@@ -105,16 +105,21 @@ const PersonMiddleware = {
 ```
 
 ## middlewareMethods
-Or we can use `middlewareMethods` to define function names for middleweare target within a class.
+In a class, function's name start or end with "_" will not be able to apply as middleware.
+Or we can use `middlewareMethods` to define function names for middleware target within a class.
 
 ```
 class PersonMiddleware {
   constructor() {
     /**
-     * Define function names for middleweare target.
+     * Or Define function names for middleweare target.
      * @type {Array}
      */
     this.middlewareMethods = ['walk', 'speak'];
+  }
+  // Function's name start or end with "_" will not be able to apply as middleware.
+  _getPrefix() {
+   return 'Middleware log: ';
   }
   log(text) {
     console.log('Middleware log: ' + text);
