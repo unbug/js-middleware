@@ -35,7 +35,7 @@ module.exports = {
     'no-array-constructor': 2,
     'no-mixed-spaces-and-tabs': 2,
     'no-new-object': 2,
-    'no-trailing-spaces': [2],
+    'no-trailing-spaces': [1],
     'one-var': [2, 'never'],
     'operator-linebreak': [2, 'after'],
     'quotes': [2, 'single', 'avoid-escape'],
