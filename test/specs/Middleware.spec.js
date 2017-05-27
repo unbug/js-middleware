@@ -2,7 +2,7 @@
 import {MiddlewareManager} from '../../lib/Middleware';
 import Person from '../person/Person';
 import WalkMiddleware from '../middlewares/WalkMiddleware';
-import {PersonMiddleware1, PersonMiddleware2} from '../middlewares/PersonMiddleware';
+import {PersonMiddleware1, PersonMiddleware2, PersonMiddleware3} from '../middlewares/PersonMiddleware';
 
 describe('Middleware: ', () => {
   let person;
@@ -21,7 +21,6 @@ describe('Middleware: ', () => {
   describe('middleware function: ', () => {
     it('should apply the middlweare function', () => {
       middlewareManager.use('walk', WalkMiddleware);
-      const step = person.step;
       const newStep = 3;
       person.walk(newStep);
       return assert.equal(person.step, newStep + 1);
@@ -36,19 +35,29 @@ describe('Middleware: ', () => {
       person.walk(newStep);
       person.speak('hello');
       assert.equal(person.step, newStep + 1);
-      assert.isTrue(/from middleware/g.test(person.word), newStep + 1);
+      assert.isTrue(/from middleware/g.test(person.word));
     });
   });
 
   describe('middlewareMethods: ', () => {
     it('should apply the middlweare object', () => {
       middlewareManager.use(new PersonMiddleware2());
-      const step = person.step;
       const newStep = 3;
       person.walk(newStep);
       person.speak('hello');
       assert.equal(person.step, newStep + 1);
-      assert.isTrue(/from middleware/g.test(person.word), newStep + 1);
+      assert.isTrue(/from middleware/g.test(person.word));
+    });
+  });
+
+  describe('middleware object with private method: ', () => {
+    it('should apply the middlweare object', () => {
+      middlewareManager.use(new PersonMiddleware3());
+      const newStep = 3;
+      person.walk(newStep);
+      person.speak('hello');
+      assert.equal(person.step, newStep + 1);
+      assert.isTrue(/from middleware/g.test(person.word));
     });
   });
 });

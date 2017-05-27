@@ -31,3 +31,24 @@ export class PersonMiddleware2 {
     }
   }
 }
+
+export class PersonMiddleware3 {
+  // Prefix/Postfix method name by an underscore will ignore
+  _getWord(word) {
+    return 'from middleware: ' + word;
+  }
+
+  walk(target) {
+    return next => step => {
+      step += 1;
+      return next(step);
+    }
+  }
+
+  speak(target) {
+    return next => word => {
+      word = this._getWord();
+      return next(word);
+    }
+  }
+}
