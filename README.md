@@ -73,7 +73,7 @@ Now we apply the log function as a middleware to a Person instance.
  // apply middleware to target object
  const p = new Person();
  const middlewareManager = new MiddlewareManager(p);
- middlewareManager.use('walk', walk);
+ middlewareManager.use('walk', logger);
  p.walk(3);
 ```
 Whenever a Person instance call it's walk method, we'll see logs from the looger middleware.
