@@ -35,7 +35,7 @@
     "chai": "^3.5.0",
     "del": "^2.2.2",
     "derequire": "^2.0.6",
-    "eslint": "^3.17.1",
+    "eslint": "^6.6.0",
     "fs-then-native": "^1.0.2",
     "gulp": "^3.9.1",
     "gulp-eslint": "^3.0.1",
