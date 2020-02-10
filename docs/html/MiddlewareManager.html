@@ -96,446 +96,25 @@ The next middleware function is commonly denoted by a variable named next.</p>
 it must call next() to pass control to the next middleware function. Otherwise,
 the target function will be left hanging.</p>
 <p>e.g.</p>
-<pre class="prettyprint source"><code> const walk = target => next => (...args) => {
-    this.log(`walk function start.`);
-    const result = next(...args);
-    this.log(`walk function end.`);
-    return result;
-  }</code></pre><p>Middleware object is an object that contains function's name as same as the target object's function name.</p>
+<pre class="prettyprint source"><code>const walk = target => next => (...args) => {
+   this.log(`walk function start.`);
+   const result = next(...args);
+   this.log(`walk function end.`);
+   return result;
+ }
+</code></pre>
+<p>Middleware object is an object that contains function's name as same as the target object's function name.</p>
 <p>e.g.</p>
-<pre class="prettyprint source"><code> const Logger = {
-     walk: target => next => (...args) => {
-       console.log(`walk function start.`);
-       const result = next(...args);
-       console.log(`walk function end.`);
-       return result;
-     }
-  }</code></pre><p>Function's name start or end with &quot;_&quot; will not be able to apply middleware.</p></div>
-        
-    
-</header>
-
-
-<article>
-    <div class="container-overview">
-    
-        
-<hr>
-<dt>
-    <h4 class="name" id="MiddlewareManager"><span class="type-signature"></span>new MiddlewareManager()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">## Basic
-
-We define a Person class.
-// the target object
-class Person {
-  // the target function
-  walk(step) {
-    this.step = step;
-  }
-
-  speak(word) {
-    this.word = word;
-  }
-}
-
-Then we define a middleware function to print log.
-
-// middleware for walk function
-const logger = target =&gt; next =&gt; (...args) =&gt; {
-  console.log(&#x60;walk start, steps: ${args[0]}.&#x60;);
-  const result = next(...args);
-  console.log(&#x60;walk end.&#x60;);
-  return result;
-}
-
-Now we apply the log function as a middleware to a Person instance.
-
-// apply middleware to target object
-const p = new Person();
-const middlewareManager = new MiddlewareManager(p);
-middlewareManager.use(&#x27;walk&#x27;, logger);
-p.walk(3);
-
-Whenever a Person instance call it&#x27;s walk method, we&#x27;ll see logs from the looger middleware.
-
-## Middleware object
-We can also apply a middleware object to a target object.
-Middleware object is an object that contains function&#x27;s name as same as the target object&#x27;s function name.
-
-const PersonMiddleware = {
-  walk: target =&gt; next =&gt; step =&gt; {
-    console.log(&#x60;walk start, steps: step.&#x60;);
-    const result = next(step);
-    console.log(&#x60;walk end.&#x60;);
-    return result;
-  },
-  speak: target =&gt; next =&gt; word =&gt; {
-    word = &#x27;this is a middleware trying to say: &#x27; + word;
-    return next(word);
-  }
-}
-
-// apply middleware to target object
-const p = new Person();
-const middlewareManager = new MiddlewareManager(p);
-middlewareManager.use(PersonMiddleware);
-p.walk(3);
-p.speak(&#x27;hi&#x27;);
-
-## middlewareMethods
-In a class, function&#x27;s name start or end with &quot;_&quot; will not be able to apply as middleware.
-Or we can use &#x60;middlewareMethods&#x60; to define function names for middleware target within a class.
-
-class PersonMiddleware {
-  constructor() {
-    // Or Define function names for middleware target.
-    this.middlewareMethods = [&#x27;walk&#x27;, &#x27;speak&#x27;];
-  }
-  // Function&#x27;s name start or end with &quot;_&quot; will not be able to apply as middleware.
-  _getPrefix() {
-    return &#x27;Middleware log: &#x27;;
-  }
-  log(text) {
-    console.log(this._getPrefix() + text);
-  }
-  walk(target) {
-    return next =&gt; step =&gt; {
-      this.log(&#x60;walk start, steps: step.&#x60;);
-      const result = next(step);
-      this.log(&#x60;walk end.&#x60;);
+<pre class="prettyprint source"><code>const Logger = {
+    walk: target => next => (...args) => {
+      console.log(`walk function start.`);
+      const result = next(...args);
+      console.log(`walk function end.`);
       return result;
     }
-  }
-  speak(target) {
-    return next =&gt; word =&gt; {
-      this.log(&#x27;this is a middleware trying to say: &#x27; + word);
-      return next(word);
-    }
-  }
-}
-
-// apply middleware to target object
-const p = new Person();
-const middlewareManager = new MiddlewareManager(p);
-middlewareManager.use(new PersonMiddleware())
-p.walk(3);
-p.speak(&#x27;hi&#x27;);</pre>
-
-
-    
-</dd>
-
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        <dl>
-            
-<hr>
-<dt>
-    <h4 class="name" id="use"><span class="type-signature"></span>use(methodName, middlewares)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Apply (register) middleware functions to the target function or apply (register) middleware objects.
-If the first argument is a middleware object, the rest arguments must be middleware objects.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Argument</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>methodName</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-|
-
-<span class="param-type">object</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>String for target function name, object for a middleware object.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>middlewares</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-|
-
-<span class="param-type">object</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                    &lt;repeatable><br>
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The middleware chain to be applied.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>this</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">object</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        </dl>
-    
-
-    
-
-    
-</article>
-
-</section>
-
-
-
-
-	<h1 class="page-title">Class: MiddlewareManager</h1>
-<section>
-
-<header>
-    
-        <h2>
-        MiddlewareManager
-        </h2>
+ }
+</code></pre>
+<p>Function's name start or end with &quot;_&quot; will not be able to apply middleware.</p></div>
         
     
 </header>
@@ -733,6 +312,108 @@ If the first argument is a middleware object, the rest arguments must be middlew
         
 
     
+        <h5>Example</h5>
+        
+    <pre class="sunlight-highlight-javascript">## Basic
+
+We define a Person class.
+// the target object
+class Person {
+  // the target function
+  walk(step) {
+    this.step = step;
+  }
+
+  speak(word) {
+    this.word = word;
+  }
+}
+
+Then we define a middleware function to print log.
+
+// middleware for walk function
+const logger = target =&gt; next =&gt; (...args) =&gt; {
+  console.log(&#x60;walk start, steps: ${args[0]}.&#x60;);
+  const result = next(...args);
+  console.log(&#x60;walk end.&#x60;);
+  return result;
+}
+
+Now we apply the log function as a middleware to a Person instance.
+
+// apply middleware to target object
+const p = new Person();
+const middlewareManager = new MiddlewareManager(p);
+middlewareManager.use(&#x27;walk&#x27;, logger);
+p.walk(3);
+
+Whenever a Person instance call it&#x27;s walk method, we&#x27;ll see logs from the looger middleware.
+
+## Middleware object
+We can also apply a middleware object to a target object.
+Middleware object is an object that contains function&#x27;s name as same as the target object&#x27;s function name.
+
+const PersonMiddleware = {
+  walk: target =&gt; next =&gt; step =&gt; {
+    console.log(&#x60;walk start, steps: step.&#x60;);
+    const result = next(step);
+    console.log(&#x60;walk end.&#x60;);
+    return result;
+  },
+  speak: target =&gt; next =&gt; word =&gt; {
+    word = &#x27;this is a middleware trying to say: &#x27; + word;
+    return next(word);
+  }
+}
+
+// apply middleware to target object
+const p = new Person();
+const middlewareManager = new MiddlewareManager(p);
+middlewareManager.use(PersonMiddleware);
+p.walk(3);
+p.speak(&#x27;hi&#x27;);
+
+## middlewareMethods
+In a class, function&#x27;s name start or end with &quot;_&quot; will not be able to apply as middleware.
+Or we can use &#x60;middlewareMethods&#x60; to define function names for middleware target within a class.
+
+class PersonMiddleware {
+  constructor() {
+    // Or Define function names for middleware target.
+    this.middlewareMethods = [&#x27;walk&#x27;, &#x27;speak&#x27;];
+  }
+  // Function&#x27;s name start or end with &quot;_&quot; will not be able to apply as middleware.
+  _getPrefix() {
+    return &#x27;Middleware log: &#x27;;
+  }
+  log(text) {
+    console.log(this._getPrefix() + text);
+  }
+  walk(target) {
+    return next =&gt; step =&gt; {
+      this.log(&#x60;walk start, steps: step.&#x60;);
+      const result = next(step);
+      this.log(&#x60;walk end.&#x60;);
+      return result;
+    }
+  }
+  speak(target) {
+    return next =&gt; word =&gt; {
+      this.log(&#x27;this is a middleware trying to say: &#x27; + word);
+      return next(word);
+    }
+  }
+}
+
+// apply middleware to target object
+const p = new Person();
+const middlewareManager = new MiddlewareManager(p);
+middlewareManager.use(new PersonMiddleware())
+p.walk(3);
+p.speak(&#x27;hi&#x27;);</pre>
+
+
+    
 </dd>
 
     
@@ -742,6 +423,13 @@ If the first argument is a middleware object, the rest arguments must be middlew
 
     
 
+    
+        <h3 class="subsection-title">Classes</h3>
+
+        <dl>
+            <dt><a href="MiddlewareManager.html">MiddlewareManager</a></dt>
+            <dd></dd>
+        </dl>
     
 
     
@@ -1004,9 +692,9 @@ If the first argument is a middleware object, the rest arguments must be middlew
 
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a>
 	
-		on 2017-06-21
+		on 2020-02-10
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
