@@ -63,6 +63,8 @@ function compose() {
   };
 }
 /**
+ * @class MiddlewareManager
+ * @classdesc
  * Manage middlewares for an object.
  * Middleware functions are functions that have access to the target function and it's arguments,
  * and the target object and the next middleware function in the target function cycle.

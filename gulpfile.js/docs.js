@@ -1,6 +1,6 @@
 const gulp = require('gulp-help')(require('gulp'))
 const jsdoc = require('gulp-jsdoc3')
-const fs = require('fs-then-native');
+const fs = require('fs')
 const jsdoc2md = require('jsdoc-to-markdown')
 
 const config = require('../docs/jsdoc.conf.json');
@@ -13,10 +13,14 @@ function docsHtml(cb) {
 }
 docsHtml.description = 'Builds HTML documentation.'
 
-function docsMd() {
-  return jsdoc2md.render({files: ['./lib/**/*.js']})
+function docsMd(cb) {
+  jsdoc2md.render({
+    files: ['./lib/**/*.js'],
+    'example-lang': 'js'
+  })
     .then(function (output) {
-      return fs.writeFile('docs/API.md', output)
+      fs.writeFileSync('docs/API.md', output)
+      cb()
     })
 }
 docsMd.description = 'Builds markdown documentation.'
