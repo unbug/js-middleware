@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="MiddlewareManager.html">MiddlewareManager</a></li>
+					<li><a href="MiddlewareManager.html">MiddlewareManager</a></li><li><a href="MiddlewareManager_MiddlewareManager.html">MiddlewareManager#MiddlewareManager</a></li>
 				</ul>
 			</li>
 			
@@ -93,14 +93,17 @@
 
 
     <section class="readme-section">
-        <article><h1>js-middleware</h1><p>Powerful Javascript Middleware Pattern implementation, apply middleweares to any object.
+        <article><h1>js-middleware</h1>
+<p>Powerful Javascript Middleware Pattern implementation, apply middleweares to any object.
 A painless solution to make codes as scalable and maintainable as ReduxJS and ExpressJS.</p>
-<h2>Links</h2><ul>
+<h2>Links</h2>
+<ul>
 <li><a href="https://unbug.github.io/js-middleware/">Project overview</a></li>
 <li><a href="https://unbug.github.io/js-middleware/docs/html/">Documentation</a></li>
 <li><a href="https://github.com/unbug/js-middleware">GitHub repo</a></li>
 </ul>
-<h1>Overview</h1><p>Middleware functions are functions that have access to the target function and it's arguments,
+<h1>Overview</h1>
+<p>Middleware functions are functions that have access to the target function and it's arguments,
 and the target object and the next middleware function in the target function cycle.
 The next middleware function is commonly denoted by a variable named next.</p>
 <p>Middleware functions can perform the following tasks:</p>
@@ -108,42 +111,60 @@ The next middleware function is commonly denoted by a variable named next.</p>
 <li>Execute any code.</li>
 <li>Make changes to the function's arguments.</li>
 <li>End the target function.</li>
-<li><p>Call the next middleware in the stack.</p>
+<li>Call the next middleware in the stack.</li>
+</ul>
 <p>If the current middleware function does not end the target function cycle,
 it must call next() to pass control to the next middleware function. Otherwise,
 the target function will be left hanging.</p>
-</li>
-</ul>
-<h1>Get started</h1><ol>
+<h1>Get started</h1>
+<ol>
 <li><strong>window.MiddlewareManager</strong> is available for browsers by include
-<a href="https://github.com/unbug/js-middleware/tree/master/dist"><code>dist/middleware.min.js</code></a> file in your HTML.<pre class="prettyprint source"><code>&lt;script src=&quot;middleware.min.js&quot;>&lt;/script></code></pre></li>
-<li>Or install the package<pre class="prettyprint source"><code>npm install --save js-middleware</code></pre>and import it in your files<pre class="prettyprint source"><code>import {MiddlewareManager} from 'js-middleware';</code></pre></li>
+<a href="https://github.com/unbug/js-middleware/tree/master/dist"><code>dist/middleware.min.js</code></a> file in your HTML.</li>
 </ol>
-<h1>Usages</h1><h2>Basic</h2><p>We define a Person class.</p>
+<pre class="prettyprint source"><code>  &lt;script src=&quot;middleware.min.js&quot;>&lt;/script>
+</code></pre>
+<ol start="2">
+<li>Or install the package</li>
+</ol>
+<pre class="prettyprint source"><code>npm install --save js-middleware
+</code></pre>
+<p>and import it in your files</p>
+<pre class="prettyprint source"><code>import {MiddlewareManager} from 'js-middleware';
+</code></pre>
+<h1>Usages</h1>
+<h2>Basic</h2>
+<p>We define a Person class.</p>
 <pre class="prettyprint source"><code>// the target object
 class Person {
   // the target function
   walk(step) {
     this.step = step;
   }
-
+  
   speak(word) {
     this.word = word;
   }
- }</code></pre><p>Then we define a middleware function to print log.</p>
+ }
+</code></pre>
+<p>Then we define a middleware function to print log.</p>
 <pre class="prettyprint source"><code> // middleware for walk function
  const logger = target => next => (...args) => {
     console.log(`walk start, steps: ${args[0]}.`);
     const result = next(...args);
     console.log(`walk end.`);
     return result;
-  }</code></pre><p>Now we apply the log function as a middleware to a Person instance.</p>
+  }
+</code></pre>
+<p>Now we apply the log function as a middleware to a Person instance.</p>
 <pre class="prettyprint source"><code> // apply middleware to target object
  const p = new Person();
  const middlewareManager = new MiddlewareManager(p);
  middlewareManager.use('walk', logger);
- p.walk(3);</code></pre><p>Whenever a Person instance call it's walk method, we'll see logs from the looger middleware.</p>
-<h2>Middleware object</h2><p>We can also apply a middleware object to a target object. Middleware object is an object that contains function's name as same as the target object's function name.
+ p.walk(3);
+</code></pre>
+<p>Whenever a Person instance call it's walk method, we'll see logs from the looger middleware.</p>
+<h2>Middleware object</h2>
+<p>We can also apply a middleware object to a target object. Middleware object is an object that contains function's name as same as the target object's function name.
 Function's name start or end with &quot;_&quot; will not be able to apply middleware.</p>
 <pre class="prettyprint source"><code>const PersonMiddleware = {
   walk: target => next => step => {
@@ -163,7 +184,10 @@ Function's name start or end with &quot;_&quot; will not be able to apply middle
  const middlewareManager = new MiddlewareManager(p);
  middlewareManager.use(PersonMiddleware);
  p.walk(3);
- p.speak('hi');</code></pre><h2>middlewareMethods</h2><p>In a class, function's name start or end with &quot;_&quot; will not be able to apply as middleware.
+ p.speak('hi');
+</code></pre>
+<h2>middlewareMethods</h2>
+<p>In a class, function's name start or end with &quot;_&quot; will not be able to apply as middleware.
 Or we can use <code>middlewareMethods</code> to define function names for middleware target within a class.</p>
 <pre class="prettyprint source"><code>class PersonMiddleware {
   constructor() {
@@ -201,40 +225,52 @@ Or we can use <code>middlewareMethods</code> to define function names for middle
  const middlewareManager = new MiddlewareManager(p);
  middlewareManager.use(new PersonMiddleware())
  p.walk(3);
- p.speak('hi');</code></pre><h1>APIs</h1><h3>.use(methodName, ...middlewares)</h3><p>Apply (register) middleware functions to the target function or apply (register) middleware objects.
+ p.speak('hi');
+</code></pre>
+<h1>APIs</h1>
+<h3>.use(methodName, ...middlewares)</h3>
+<p>Apply (register) middleware functions to the target function or apply (register) middleware objects.
 If the first argument is a middleware object, the rest arguments must be middleware objects.</p>
 <ul>
 <li><strong>{string|object}</strong> methodName String for target function name, object for a middleware object.</li>
 <li><strong>{...function}</strong> middlewares The middleware chain to be applied.</li>
 <li>return <strong>{object}</strong> this</li>
 </ul>
-<h1>Build</h1><ol>
-<li><p>Run <code>npm install</code> to install requirements.</p>
+<h1>Build</h1>
+<ol>
+<li>
+<p>Run <code>npm install</code> to install requirements.</p>
 </li>
-<li><p>Run <code>gulp</code> to builds the library, generates <code>dist/middleware.js</code> as the core script, watches for file changes, 
+<li>
+<p>Run <code>gulp</code> to builds the library, generates <code>dist/middleware.js</code> as the core script, watches for file changes,
 starts a HTTP server for debug.</p>
+</li>
+</ol>
 <pre class="prettyprint source"><code>Usage
- gulp [TASK] [OPTIONS...]
+  gulp [TASK] [OPTIONS...]
 
 Available tasks
- build       Builds the library.
- clean       Cleans files.
- clean:dist  Cleans dist files.
- clean:docs  Cleans docs files.
- default    
- docs        Builds documentation.
- docs:html   Builds HTML documentation.
- docs:md     Builds markdown documentation.
- help        Display this help text.
- lint        Lint JS files.
- mini        Minify the library.
- server      Starts a HTTP server for debug.
- test        Run test cases.
- watch       Watches for changes in files, re-lint, re-build & re-docs.</code></pre></li>
-<li>Run <code>gulp docs</code> to build docs. View markdown docs with <code>docs/API.md</code>, or run <code>gulp server</code> to start a HTTP server 
+  build       Builds the library.
+  clean       Cleans files.
+  clean:dist  Cleans dist files.
+  clean:docs  Cleans docs files.
+  default    
+  docs        Builds documentation.
+  docs:html   Builds HTML documentation.
+  docs:md     Builds markdown documentation.
+  help        Display this help text.
+  lint        Lint JS files.
+  mini        Minify the library.
+  server      Starts a HTTP server for debug.
+  test        Run test cases.
+  watch       Watches for changes in files, re-lint, re-build & re-docs.
+</code></pre>
+<ol start="3">
+<li>Run <code>gulp docs</code> to build docs. View markdown docs with <code>docs/API.md</code>, or run <code>gulp server</code> to start a HTTP server
 and view HTML docs with <a href="localhost:3000/docs/html/">localhost:3000/docs/html/</a>.</li>
 </ol>
-<h1>Roadmap &amp; Make contributions</h1><ul>
+<h1>Roadmap &amp; Make contributions</h1>
+<ul>
 <li>Supports RegExp to match method names, pass the current method name as param to the current middleware.</li>
 <li><strong>once(methodName, ...middlewares)</strong> Apply middlewares only run once.</li>
 <li>Be able to <strong>unuse</strong> middlewares.</li>
@@ -282,9 +318,9 @@ and view HTML docs with <a href="localhost:3000/docs/html/">localhost:3000/docs/
 
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a>
 	
-		on 2017-06-21
+		on 2020-02-10
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

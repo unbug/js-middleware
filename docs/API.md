@@ -22,8 +22,7 @@ the target function will be left hanging.</p>
     const result = next(...args);
     this.log(`walk function end.`);
     return result;
-  }
-</code></pre><p>Middleware object is an object that contains function&#39;s name as same as the target object&#39;s function name.</p>
+  }</code></pre><p>Middleware object is an object that contains function&#39;s name as same as the target object&#39;s function name.</p>
 <p>e.g.</p>
 <pre><code> const Logger = {
      walk: target =&gt; next =&gt; (...args) =&gt; {
@@ -32,11 +31,8 @@ the target function will be left hanging.</p>
        console.log(`walk function end.`);
        return result;
      }
-  }
-</code></pre><p>Function&#39;s name start or end with &quot;_&quot; will not be able to apply middleware.</p>
+  }</code></pre><p>Function&#39;s name start or end with &quot;_&quot; will not be able to apply middleware.</p>
 </dd>
-<dt><a href="#MiddlewareManager">MiddlewareManager</a></dt>
-<dd></dd>
 </dl>
 
 ## Functions
@@ -96,12 +92,17 @@ Function's name start or end with "_" will not be able to apply middleware.
 **Kind**: global class  
 
 * [MiddlewareManager](#MiddlewareManager)
-    * [new MiddlewareManager(target, ...middlewareObjects)](#new_MiddlewareManager_new)
+    * [.MiddlewareManager](#MiddlewareManager+MiddlewareManager)
+        * [new exports.MiddlewareManager(target, ...middlewareObjects)](#new_MiddlewareManager+MiddlewareManager_new)
     * [.use(methodName, ...middlewares)](#MiddlewareManager+use) ⇒ <code>object</code>
 
-<a name="new_MiddlewareManager_new"></a>
+<a name="MiddlewareManager+MiddlewareManager"></a>
 
-### new MiddlewareManager(target, ...middlewareObjects)
+### middlewareManager.MiddlewareManager
+**Kind**: instance class of [<code>MiddlewareManager</code>](#MiddlewareManager)  
+<a name="new_MiddlewareManager+MiddlewareManager_new"></a>
+
+#### new exports.MiddlewareManager(target, ...middlewareObjects)
 **Returns**: <code>object</code> - this  
 
 | Param | Type | Description |
@@ -115,46 +116,13 @@ Function's name start or end with "_" will not be able to apply middleware.
 Apply (register) middleware functions to the target function or apply (register) middleware objects.
 If the first argument is a middleware object, the rest arguments must be middleware objects.
 
-**Kind**: instance method of <code>[MiddlewareManager](#MiddlewareManager)</code>  
+**Kind**: instance method of [<code>MiddlewareManager</code>](#MiddlewareManager)  
 **Returns**: <code>object</code> - this  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| methodName | <code>string</code> &#124; <code>object</code> | String for target function name, object for a middleware object. |
-| ...middlewares | <code>function</code> &#124; <code>object</code> | The middleware chain to be applied. |
-
-<a name="MiddlewareManager"></a>
-
-## MiddlewareManager
-**Kind**: global class  
-
-* [MiddlewareManager](#MiddlewareManager)
-    * [new MiddlewareManager(target, ...middlewareObjects)](#new_MiddlewareManager_new)
-    * [.use(methodName, ...middlewares)](#MiddlewareManager+use) ⇒ <code>object</code>
-
-<a name="new_MiddlewareManager_new"></a>
-
-### new MiddlewareManager(target, ...middlewareObjects)
-**Returns**: <code>object</code> - this  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| target | <code>object</code> | The target object. |
-| ...middlewareObjects | <code>object</code> | Middleware objects. |
-
-<a name="MiddlewareManager+use"></a>
-
-### middlewareManager.use(methodName, ...middlewares) ⇒ <code>object</code>
-Apply (register) middleware functions to the target function or apply (register) middleware objects.
-If the first argument is a middleware object, the rest arguments must be middleware objects.
-
-**Kind**: instance method of <code>[MiddlewareManager](#MiddlewareManager)</code>  
-**Returns**: <code>object</code> - this  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| methodName | <code>string</code> &#124; <code>object</code> | String for target function name, object for a middleware object. |
-| ...middlewares | <code>function</code> &#124; <code>object</code> | The middleware chain to be applied. |
+| methodName | <code>string</code> \| <code>object</code> | String for target function name, object for a middleware object. |
+| ...middlewares | <code>function</code> \| <code>object</code> | The middleware chain to be applied. |
 
 <a name="compose"></a>
 

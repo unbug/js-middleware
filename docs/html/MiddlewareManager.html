@@ -33,7 +33,7 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="MiddlewareManager.html">MiddlewareManager</a></li>
+					<li><a href="MiddlewareManager.html">MiddlewareManager</a></li><li><a href="MiddlewareManager_MiddlewareManager.html">MiddlewareManager#MiddlewareManager</a></li>
 				</ul>
 			</li>
 			
@@ -96,21 +96,25 @@ The next middleware function is commonly denoted by a variable named next.</p>
 it must call next() to pass control to the next middleware function. Otherwise,
 the target function will be left hanging.</p>
 <p>e.g.</p>
-<pre class="prettyprint source"><code> const walk = target => next => (...args) => {
-    this.log(`walk function start.`);
-    const result = next(...args);
-    this.log(`walk function end.`);
-    return result;
-  }</code></pre><p>Middleware object is an object that contains function's name as same as the target object's function name.</p>
+<pre class="prettyprint source"><code>const walk = target => next => (...args) => {
+   this.log(`walk function start.`);
+   const result = next(...args);
+   this.log(`walk function end.`);
+   return result;
+ }
+</code></pre>
+<p>Middleware object is an object that contains function's name as same as the target object's function name.</p>
 <p>e.g.</p>
-<pre class="prettyprint source"><code> const Logger = {
-     walk: target => next => (...args) => {
-       console.log(`walk function start.`);
-       const result = next(...args);
-       console.log(`walk function end.`);
-       return result;
-     }
-  }</code></pre><p>Function's name start or end with &quot;_&quot; will not be able to apply middleware.</p></div>
+<pre class="prettyprint source"><code>const Logger = {
+    walk: target => next => (...args) => {
+      console.log(`walk function start.`);
+      const result = next(...args);
+      console.log(`walk function end.`);
+      return result;
+    }
+ }
+</code></pre>
+<p>Function's name start or end with &quot;_&quot; will not be able to apply middleware.</p></div>
         
     
 </header>
@@ -302,446 +306,12 @@ p.speak(&#x27;hi&#x27;);</pre>
     
 
     
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
+        <h3 class="subsection-title">Classes</h3>
 
         <dl>
-            
-<hr>
-<dt>
-    <h4 class="name" id="use"><span class="type-signature"></span>use(methodName, middlewares)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Apply (register) middleware functions to the target function or apply (register) middleware objects.
-If the first argument is a middleware object, the rest arguments must be middleware objects.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Argument</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>methodName</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-|
-
-<span class="param-type">object</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>String for target function name, object for a middleware object.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>middlewares</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-|
-
-<span class="param-type">object</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                    &lt;repeatable><br>
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The middleware chain to be applied.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>this</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">object</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
+            <dt><a href="MiddlewareManager_MiddlewareManager.html">MiddlewareManager</a></dt>
+            <dd></dd>
         </dl>
-    
-
-    
-
-    
-</article>
-
-</section>
-
-
-
-
-	<h1 class="page-title">Class: MiddlewareManager</h1>
-<section>
-
-<header>
-    
-        <h2>
-        MiddlewareManager
-        </h2>
-        
-    
-</header>
-
-
-<article>
-    <div class="container-overview">
-    
-        
-<hr>
-<dt>
-    <h4 class="name" id="MiddlewareManager"><span class="type-signature"></span>new MiddlewareManager(target, middlewareObjects)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Argument</th>
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>target</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>The target object.</p></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>middlewareObjects</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">object</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-
-                
-
-                
-                    &lt;repeatable><br>
-                
-                </td>
-            
-
-            
-
-            <td class="description last"><p>Middleware objects.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>this</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">object</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-    
-    </div>
-
-    
-
-    
-
     
 
     
@@ -1004,9 +574,9 @@ If the first argument is a middleware object, the rest arguments must be middlew
 
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a>
 	
-		on 2017-06-21
+		on 2020-02-10
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

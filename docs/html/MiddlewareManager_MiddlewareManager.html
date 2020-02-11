@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>js-middleware Global</title>
+	<title>js-middleware Class: MiddlewareManager</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -72,13 +72,15 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Global</h1>
+	<h1 class="page-title">Class: MiddlewareManager</h1>
 <section>
 
 <header>
     
         <h2>
+            <span class="ancestors"><a href="MiddlewareManager.html">MiddlewareManager</a>#</span>
         
+        MiddlewareManager
         </h2>
         
     
@@ -89,82 +91,14 @@
     <div class="container-overview">
     
         
-
-        
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-        <h3 class="subsection-title">Methods</h3>
-
-        <dl>
-            
 <hr>
 <dt>
-    <h4 class="name" id="compose"><span class="type-signature"></span>compose(funcs)</h4>
+    <h4 class="name" id="MiddlewareManager"><span class="type-signature"></span>new MiddlewareManager(target, middlewareObjects)</h4>
     
     
 </dt>
 <dd>
 
-    
-    <div class="description">
-        <p>Composes single-argument functions from right to left. The rightmost
-function can take multiple arguments as it provides the signature for
-the resulting composite function.</p>
-    </div>
     
 
     
@@ -200,13 +134,45 @@ the resulting composite function.</p>
 
         <tr>
             
-                <td class="name"><code>funcs</code></td>
+                <td class="name"><code>target</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">function</span>
+<span class="param-type">object</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>The target object.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>middlewareObjects</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
 
 
 
@@ -227,7 +193,7 @@ the resulting composite function.</p>
 
             
 
-            <td class="description last"><p>The functions to compose.</p></td>
+            <td class="description last"><p>Middleware objects.</p></td>
         </tr>
 
     
@@ -291,9 +257,7 @@ the resulting composite function.</p>
     
             
 <div class="param-desc">
-    <p>A function obtained by composing the argument functions
-from right to left. For example, compose(f, g, h) is identical to doing
-(...args) =&gt; f(g(h(...args))).</p>
+    <p>this</p>
 </div>
 
 
@@ -304,7 +268,7 @@ from right to left. For example, compose(f, g, h) is identical to doing
     </dt>
     <dd>
         
-<span class="param-type">function</span>
+<span class="param-type">object</span>
 
 
 
@@ -317,7 +281,21 @@ from right to left. For example, compose(f, g, h) is identical to doing
     
 </dd>
 
-        </dl>
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
     
 
     
