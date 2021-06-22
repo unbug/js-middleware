@@ -60,4 +60,15 @@ describe('Middleware: ', () => {
       assert.isTrue(/from middleware/g.test(person.word));
     });
   });
+
+  describe('middleware all class methods: ', () => {
+    it('should apply the middlweare function to all class methods', () => {
+      middlewareManager.use(null, WalkMiddleware);
+      const newStep = 3;
+      person.walk(newStep);
+      assert.equal(person.step, newStep + 1);
+      person.speak('hello');
+      return assert.equal(person.word, 'hello1');
+    });
+  });
 });

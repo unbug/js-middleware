@@ -9,13 +9,17 @@ exports.MiddlewareManager = void 0;
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -141,7 +145,19 @@ function compose() {
  * middlewareManager.use('walk', logger);
  * p.walk(3);
  *
- * Whenever a Person instance call it's walk method, we'll see logs from the looger middleware.
+ * Whenever a Person instance call it's walk method, we'll see logs from the logger middleware.
+ *
+ * ## Apply to all
+ *
+ * Take the same example as above but do not specify the walk method instead pass null.
+ * // apply middleware to target object
+ * const p = new Person();
+ * const middlewareManager = new MiddlewareManager(p);
+ * middlewareManager.use(null, logger);
+ * p.walk(3);
+ * p.speak('hello');
+ *
+ * Whenever a Person instance calls any of it's methods, we'll see logs from the logger middleware.
  *
  * ## Middleware object
  * We can also apply a middleware object to a target object.
@@ -209,9 +225,7 @@ function compose() {
  */
 
 
-var MiddlewareManager =
-/*#__PURE__*/
-function () {
+var MiddlewareManager = /*#__PURE__*/function () {
   /**
    * @param {object} target The target object.
    * @param {...object} middlewareObjects Middleware objects.
@@ -270,7 +284,9 @@ function () {
           }
 
           middlewares.forEach(function (middleware) {
-            return typeof middleware === 'function' && _this._methodMiddlewares[methodName].push(middleware(_this._target));
+            if (typeof middleware === 'function') {
+              _this._methodMiddlewares[methodName].push(middleware(_this._target, methodName));
+            }
           });
           this._target[methodName] = compose.apply(void 0, _toConsumableArray(this._methodMiddlewares[methodName]))(method.bind(this._target));
         }
@@ -280,7 +296,8 @@ function () {
      * Apply (register) middleware functions to the target function or apply (register) middleware objects.
      * If the first argument is a middleware object, the rest arguments must be middleware objects.
      *
-     * @param {string|object} methodName String for target function name, object for a middleware object.
+     * @param {string|object|null} methodName String for target function name, object for a middleware object,
+     * null will apply the middlewares to all methods on the target.
      * @param {...function|...object} middlewares The middleware chain to be applied.
      * @return {object} this
      */
@@ -294,7 +311,7 @@ function () {
         middlewares[_key4 - 1] = arguments[_key4];
       }
 
-      if (_typeof(methodName) === 'object') {
+      if (methodName !== null && _typeof(methodName) === 'object') {
         Array.prototype.slice.call(arguments).forEach(function (arg) {
           // A middleware object can specify target functions within middlewareMethods (Array).
           // e.g. obj.middlewareMethods = ['method1', 'method2'];
@@ -302,6 +319,14 @@ function () {
           _typeof(arg) === 'object' && (arg.middlewareMethods || (Object.keys(arg).length ? Object.keys(arg) : Object.getOwnPropertyNames(Object.getPrototypeOf(arg)))).forEach(function (key) {
             typeof arg[key] === 'function' && _this2._methodIsValid(key) && _this2._applyToMethod(key, arg[key].bind(arg));
           });
+        });
+      } else if (methodName === null) {
+        var proto = Object.getPrototypeOf(this._target);
+        var methodNames = Object.getOwnPropertyNames(proto).filter(function (key) {
+          return typeof proto[key] === 'function' && key !== 'constructor';
+        });
+        methodNames.forEach(function (methodName) {
+          return _this2._applyToMethod.apply(_this2, [methodName].concat(middlewares));
         });
       } else {
         this._applyToMethod.apply(this, [methodName].concat(middlewares));

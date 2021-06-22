@@ -121,7 +121,7 @@ If the first argument is a middleware object, the rest arguments must be middlew
 
 | Param | Type | Description |
 | --- | --- | --- |
-| methodName | <code>string</code> \| <code>object</code> | String for target function name, object for a middleware object. |
+| methodName | <code>string</code> \| <code>object</code> \| <code>null</code> | String for target function name, object for a middleware object, null will apply the middlewares to all methods on the target. |
 | ...middlewares | <code>function</code> \| <code>object</code> | The middleware chain to be applied. |
 
 <a name="compose"></a>
